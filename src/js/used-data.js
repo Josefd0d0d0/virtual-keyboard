@@ -333,3 +333,5 @@ const keyboard = {
       name: "Ctrl",
     },
 };
+
+export default keyboard;
