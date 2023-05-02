@@ -66,14 +66,6 @@ body{
     text-align: center
 }
 
-.title {
-    font-size: 30px;
-    color: rgba(101,134,177,0.8);
-    -webkit-text-stroke: 1px rgba(114,177,101,0.8);
-    -webkit-text-fill-color: rgba(101,134,177,0.8)
-}
-
-
 
 /* .keyboard .row {
     clear: both;
@@ -83,7 +75,9 @@ body{
 } */
 
 
-
+p{
+    text-align: center;
+}
 
 .AltLeft,
 .AltRight,

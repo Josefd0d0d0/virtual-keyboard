@@ -33,8 +33,21 @@ function creationKeyboard(){
 }
 creationKeyboard();
 
+    const paragraph1 = document.createElement("p");
+    const paragraph2 = document.createElement("p");
+    const textOne = "Клавиатура создана в операционной системе Windows";
+    const textTwo = `Для переключения языка комбинация:ctrl + alt , сейчас язык: ${currentLanguage}`;
+
+    paragraph1.textContent = textOne;
+    paragraph2.textContent = textTwo;
+
+    document.body.appendChild(paragraph1);
+    document.body.appendChild(paragraph2);
 
 
+function updateLangText(){
+  paragraph2.textContent = `Для переключения языка комбинация:ctrl + alt , сейчас язык: ${currentLanguage}`;
+}
 
 let shiftIsDown = false;
 let keyCapsLock = false; 
@@ -53,28 +66,29 @@ function updateKeyboard() {
 }
 
 // Ввод текста и замена языка с помощью комбинаций клавишь ctrl + alt
-
 function displayC(char) {
-    container.textContent += char;
+  container.textContent += char;
 }
+
 document.addEventListener('keydown', (e)=> {
   if (e.altKey && e.ctrlKey) {
     currentLanguage = currentLanguage === "eng" ? "ru" : "eng";
     updateKeyboard()
-  }else {
+  } else {
     const keyElement = keyboard[e.code];
     if (keyElement) {
-        const keyName = keyElement.choice_lang?.[currentLanguage][shiftIsDown ? 1 : 0];
-        if (keyName !== undefined) {
-            displayC(keyName);
-        }
+      const keyName = keyElement.choice_lang?.[currentLanguage][shiftIsDown ? 1 : 0];
+      if (keyName !== undefined) {
+        displayC(keyName);
+      }
     }
-}
+  }
+  updateLangText();
 });
 
-
 // добавление свойства активному элементу
-const keys = document.querySelectorAll(".key");
+
+const keys = document.querySelectorAll(".key:not(.CapsLock)");
 keys.forEach(key => {
   key.addEventListener("mousedown", e => {
     e.target.classList.add("active");
@@ -85,16 +99,20 @@ keys.forEach(key => {
 });
 
 document.addEventListener("keydown", e => {
-  const keyElement = document.querySelector(`.key.${e.code}`);
-  if (keyElement) {
-    keyElement.classList.add("active");
+  if (e.code !== "CapsLock") {
+    const keyElement = document.querySelector(`.key.${e.code}`);
+    if (keyElement) {
+      keyElement.classList.add("active");
+    }
   }
 });
 
 document.addEventListener("keyup", e => {
-  const keyElement = document.querySelector(`.key.${e.code}`);
-  if (keyElement) {
-    keyElement.classList.remove("active");
+  if (e.code !== "CapsLock") {
+    const keyElement = document.querySelector(`.key.${e.code}`);
+    if (keyElement) {
+      keyElement.classList.remove("active");
+    }
   }
 });
 
@@ -123,7 +141,6 @@ function keyReleaseShift(e){
   }
 };
 
-
 document.addEventListener('keydown', keyHoldShift);
 document.addEventListener('keyup', keyReleaseShift);
 document.addEventListener('mousedown', keyHoldShift);
@@ -131,15 +148,17 @@ document.addEventListener('mouseup', keyReleaseShift)
 
 
 // добавление функционала CapsLock
-
+const capsLockKey = document.querySelector(".CapsLock");
 function handleCapsLock() {
   if (shiftIsDown === false){
     shiftIsDown = true;
     keyCapsLock = true;
+    capsLockKey.classList.add("active");
     updateKeyboard();
   }else if(shiftIsDown === true){
     shiftIsDown = false;
     keyCapsLock = false;
+    capsLockKey.classList.remove("active");
     updateKeyboard();
   } 
 };
@@ -219,11 +238,6 @@ document.querySelector(".keyboard-wrapper").addEventListener("click", (e) => {
     container.value += keyboard.ArrowDown.name;
   }
 });
-
-
-
-
-
 
 document.querySelector(".keyboard-wrapper").addEventListener("click", (e) =>{
   if(e.target.classList.contains("ordinary")){
