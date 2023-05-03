@@ -7,7 +7,9 @@ container.className = "textarea";
 document.body.append(container);
 
 // создаем клавиши
-let currentLanguage = "eng";
+let currentLanguage = localStorage.getItem('language') || "eng";
+localStorage.setItem('language', currentLanguage);
+
 function creationKeyboard(){
   const wrap = document.createElement("div");
   wrap.className = "keyboard-wrapper";
@@ -73,6 +75,7 @@ function displayC(char) {
 document.addEventListener('keydown', (e)=> {
   if (e.altKey && e.ctrlKey) {
     currentLanguage = currentLanguage === "eng" ? "ru" : "eng";
+    localStorage.setItem('language', currentLanguage);
     updateKeyboard()
   } else {
     const keyElement = keyboard[e.code];
